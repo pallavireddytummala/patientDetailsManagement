@@ -59,11 +59,11 @@
   align-items: center;
 }
 
-#Page form, #patient form, #viewer{
+#viewer{
   border: 2px solid black;
   border-radius: 5rem;
-  width: 35rem;
-  padding: 1rem;
+  width: 40rem;
+  padding: 2rem;
   backdrop-filter: blur(.5rem);
 }
 
@@ -97,4 +97,13 @@
   display: grid;
   gap: 0px;
   grid-template-columns: 1fr 1fr;
+}
+
+p{
+  /*background: rgba(136, 255, 0, 0.548);
+  padding: .5rem;
+  border: .2rem solid rgb(136, 255, 0);*/
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: white;
 }

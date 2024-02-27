@@ -11,8 +11,9 @@ const [acc, setacc] = useState('')
 const [admin, setAdmin] = useState('')
 const [docId, setDocId] = useState('');
 const [patientId, setPatientId] = useState('');
-const [insuranceId, setInsuranceId] = useState('');
 const [medicalState, setMedicalState] = useState('');
+const [docAdvice, setDocAdvice] = useState('');
+const [insuranceId, setInsuranceId] = useState('');
 const [latestDate, setLatestDate] = useState('');
 const [patientName, setPatientName] = useState('');
 const [age, setAge] = useState('');
@@ -25,7 +26,7 @@ const [showPatientPrescripitonSet, setPatientPrescripitonSet] = useState(false);
 const [showPatientDetailsSet, setPatientDetailsSet] = useState(false);
 const [showPatientMedicalStateGet, setPatientMedicatStateGet] = useState(false);
 const [showPatientPrescripitonGet, setPatientPrescripitonGet] = useState(false);
-const [showPatientDetailsGet, setPatientDetailsGet] = useState(true);
+const [showPatientDetailsGet, setPatientDetailsGet] = useState(false);
 
 const connectWallet = async ()=>{
   if(window.ethereum){
@@ -69,7 +70,7 @@ function validateDocLogin() {
 }
 
 async function validatePatient(){
-  const flag = await contrr.methods.validatePatient(patientId);
+  const flag = await contrr.methods.validatePatient(patientId).call();
   console.log(flag);
   return flag;
 }
@@ -83,10 +84,10 @@ async function addModifyPatientDetails(){
     alert('Please enter a valid age');
   else if(gender == '')
     alert('Please select one of the genders');
-  else if(!(insuranceId === '') && !(/^0x[0-9A-Fa-f]{40}$/.test(insuranceId)))
+  else if(!(/^0x[0-9A-Fa-f]{40}$/.test(insuranceId)))
     alert('Please enter a valid insurance id');
   else{
-    await contrr.methods.setPatientDetails(patientId, patientName, gender, age, insuranceId, docId);
+    await contrr.methods.setPatientDetails(patientId, patientName, gender, age, insuranceId, docId).send({from : acc});
     alert('Patient details updated successfully');
   }
 }
@@ -95,11 +96,59 @@ async function getPatientDetails(){
   if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)) && validatePatient())
     alert('Please enter a valid patient id');
   else{
-    const data = await contrr.methods.getPatientDetails(patientId);
-    setPatientName(String(data[0]));
-    setAge(String(data[1]));
-    setGender(String(data[2]));
-    setInsuranceId(String(data[3]));
+    const data = await contrr.methods.getPatientDetails(patientId).call();
+    console.log(data);
+    setPatientName(String(data[0][0]));
+    setAge(String(data[0][1]));
+    setGender(String(data[0][2]));
+    setInsuranceId(String(data[0][3]));
+  }
+}
+
+async function setPatientMedicalState(){
+  if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)))
+    alert('Please enter a valid patient id');
+  else if(!(/^[a-zA-Z0-9\s]+$/.test(medicalState)))
+    alert('Please enter a valid Medical state');
+  else{
+    setLatestDate((latestDate).split('-').reverse().join('-'));
+    await contrr.methods.setPatientMedicalState(patientId, medicalState, docId, latestDate).send({from : acc});
+    alert('Patient details added successfully');
+  }
+}
+
+async function getPatientMedicalState(){  
+  if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)) && validatePatient())
+    alert('Please enter a valid patient id');
+  else{
+    const data = await contrr.methods.getPatientMedicalState(patientId).call();
+    setMedicalState(data[0][0]);
+    setLatestDate(data[0][3]);
+  }
+}
+
+async function setPatientPrescription(){
+  if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)))
+    alert('Please enter a valid patient id');
+  else if(!(/^[a-zA-Z0-9\s]+$/.test(prescription)))
+    alert('Please enter a valid Prescription');
+  else if(!(/^[a-zA-Z0-9\s]+$/.test(docAdvice)))
+    alert('Please enter a valid Advice');
+  else{
+    setLatestDate((latestDate).split('-').reverse().join('-'));
+    await contrr.methods.setDoctorPrescription(patientId, prescription, docId, docAdvice).send({from : acc});
+    alert('Patient prescription added successfully');
+  }
+}
+
+async function getPatientPrescription(){
+  if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)) && validatePatient())
+    alert('Please enter a valid patient id');
+  else{
+    const data = await contrr.methods.getPatientPrescription(patientId).call();
+    console.log(data);
+    setPrescription(data[0][0]);
+    setDocAdvice(data[0][2]);
   }
 }
 
@@ -123,14 +172,12 @@ async function getPatientDetails(){
     <div id='setPatientMedicalState' style={{display: showPatientMedicalStateSet ? 'block' : 'none'}}>
        <center>
         <h1>Adding Patient Medical State</h1>
-        <form >
-          <div className="Holder">
-            <label htmlFor="patientID">Patient Id</label><input type="text" placeholder='address' id='patientID' required/>
-            <label htmlFor="medicalState"  style={{marginTop: '3rem'}}>Patient <br/> Medical State</label><textarea placeholder="Enter your message" rows={4} cols={50} id='medicalState' required/>
-            <label htmlFor="date" style={{marginTop: '2rem'}}>Date</label><input type="date" placeholder='date' id='date' required style={{marginTop: '2rem'}}/>
-          </div>
-          <input type="submit" />
-        </form>
+        <div className="Holder" id='viewer'>
+          <label htmlFor="patientID">Patient Id</label><input type="text" placeholder='address' id='patientID' required value={patientId} onChange={(e)=>{setPatientId(e.target.value)}}/>
+          <label htmlFor="medicalState"  style={{marginTop: '3rem'}}>Patient <br/> Medical State</label><textarea placeholder="Enter your message" rows={4} cols={50} id='medicalState' required value={medicalState} onChange={(e)=>{setMedicalState(e.target.value)}}/>
+          <label htmlFor="date" style={{marginTop: '2rem'}}>Date</label><input type="date" placeholder='date' id='date' required style={{marginTop: '2rem'}} value={latestDate} onChange={(e)=>{setLatestDate(e.target.value)}}/>
+        </div>
+        <button onClick={setPatientMedicalState}>Submit</button>
       </center>
     </div>
     <div id="setPatientDetails" style={{display: showPatientDetailsSet ? 'block' : 'none'}}>
@@ -152,14 +199,13 @@ async function getPatientDetails(){
     <div id="setPatientPrescription" style={{display: showPatientPrescripitonSet ? 'block' : 'none'}}>
       <center>
         <h1>Adding Patient Prescripton</h1>
-        <form >
-          <div className="Holder">
-            <label htmlFor="patientID">Patient Id</label><input type="text" placeholder='address' id='patientID' required/>
-            <label htmlFor="medicalState"  style={{marginTop: '3rem'}}>Patient Prescriptoin</label><textarea placeholder="Enter your message" rows={4} cols={50} id='medicalState' required/>
-            <label htmlFor="date" style={{marginTop: '2rem'}}>Date</label><input type="date" placeholder='date' id='date' required style={{marginTop: '2rem'}}/>
-          </div>
-          <input type="submit" />
-        </form>
+        <div className="Holder" id='viewer'>
+          <label htmlFor="patientID">Patient Id</label><input type="text" placeholder='address' id='patientID' required value={patientId} onChange={(e)=>{setPatientId(e.target.value)}}/>
+          <label htmlFor="prescription" style={{marginTop: '3rem'}}>Patient Prescription</label><textarea placeholder="Enter medical prescription" rows={4} cols={50} id='prescription' required value={prescription} onChange={(e)=>{setPrescription(e.target.value)}}/>
+          <label htmlFor="docAdvice" style={{marginTop: '3rem'}}>Patient Advice</label><textarea placeholder="Enter medical advice (diet..)" rows={4} cols={50} id='docAdvice' required value={docAdvice} onChange={(e)=>{setDocAdvice(e.target.value)}}/>
+          <label htmlFor="date" style={{marginTop: '2rem'}}>Date</label><input type="date" placeholder='date' id='date' required style={{marginTop: '2rem'}}/>
+        </div>
+        <button onClick={setPatientPrescription}>Submit</button>
       </center>
     </div>
     <div className="getPatientMedicalState" style={{display: showPatientMedicalStateGet ? 'block' : 'none'}}>
@@ -168,12 +214,7 @@ async function getPatientDetails(){
         <div id="viewer" className='Holder'>
           <label htmlFor="pId">Patient Id</label><input type="text" id='pId' value={patientId} placeholder='address' 
           onChange={(e)=>{setPatientId(e.target.value)}}required/>
-          <div></div><button onClick={()=>{
-          if(patientId == '')
-            alert('Please enter valid patientId');
-          else if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)))
-            alert('Please enter patientId in the valid format');
-          }}>submit</button>
+          <div></div><button onClick={getPatientMedicalState}>submit</button>
           <label htmlFor="pId">Patient Id</label><p id='pId'>{patientId}</p>
           <label htmlFor="medicalState">Medical State</label><p id='medicalState'>{medicalState}</p>
           <label htmlFor="lastModified">Latest modified date</label><p>{latestDate}</p>
@@ -201,15 +242,10 @@ async function getPatientDetails(){
         <div id="viewer" className='Holder'>
           <label htmlFor="pId">Patient Id</label><input type="text" id='pId' value={patientId} placeholder='address' 
           onChange={(e)=>{setPatientId(e.target.value)}}required/>
-          <div></div><button onClick={()=>{
-          if(patientId == '')
-            alert('Please enter valid patientId');
-          else if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)))
-            alert('Please enter patientId in the valid format');
-          }}>submit</button>
+          <div></div><button onClick={getPatientPrescription}>submit</button>
           <label htmlFor="pId">Patient Id</label><p id='pId'>{patientId}</p>
-          <label htmlFor="prescription">Medical State</label><p id='prescription'>{prescription}</p>
-          <label htmlFor="lastModified">Latest modified date</label><p>{latestDate}</p>
+          <label htmlFor="prescription" style={{marginTop: '1rem'}}>Medical Prescription</label><p id='prescription'>{prescription}</p>
+          <label htmlFor="lastModified" style={{marginTop: '1rem'}}>Medical advice</label><p>{docAdvice}</p>
         </div>
       </center>
     </div>
