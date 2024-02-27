@@ -7,7 +7,7 @@ const [msg, setMsg] = useState('')
 const [web3, setweb3] = useState('')
 const [contrr, setcontrr] = useState('')
 const [acc, setacc] = useState('')
-const [admin, setAdmin] = useState('0x9BA207D9515AE02084712322f162acD6F3d8Ecd9')
+const [admin, setAdmin] = useState('')
 
 const connectWallet = async ()=>{
   if(window.ethereum){
@@ -20,7 +20,7 @@ const connectWallet = async ()=>{
     const acc = await web3.eth.getAccounts();
     console.log(acc);
     setacc(acc[0])
-    const contract = new web3.eth.Contract(Cont.abi,'0x9BA207D9515AE02084712322f162acD6F3d8Ecd9');
+    const contract = new web3.eth.Contract(Cont.abi,'0x650047951102Fa6FD7BE59B05F2Dc8B8B7bC5830');
     console.log(contract)
     setcontrr(contract)
   }else{

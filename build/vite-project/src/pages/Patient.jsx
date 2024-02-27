@@ -27,7 +27,11 @@ const [showPatientDetailsGet, setPatientDetailsGet] = useState(false);
           <button onClick={()=>{
           if(patientId == '')
             alert('Please enter valid patient ID');
-          else{setPatientLogin(false);setPatientButtons(true);}
+          else if(/^0x[0-9A-Fa-f]{40}$/.test(patientId)){
+            setPatientLogin(false);setPatientButtons(true);
+          }
+          else
+            alert('Please enter patient ID in the valid format');
           }}>submit</button>
       </center>
     </div>

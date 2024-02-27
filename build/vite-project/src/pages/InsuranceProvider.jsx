@@ -26,7 +26,11 @@ const [showPatientDetailsGet, setPatientDetailsGet] = useState(false);
         <button onClick={()=>{
         if(insuranceId == '')
           alert('Please enter valid patient ID');
-        else{setInsuranceLogin(false);setInsuranceButtons(true);}
+        else if(/^0x[0-9A-Fa-f]{40}$/.test(insuranceId)){
+          setInsuranceLogin(false);setInsuranceButtons(true);
+          }
+          else
+            alert('Please enter Insurance Id in the valid format');
         }}>submit</button>
       </center>
     </div>
@@ -34,6 +38,14 @@ const [showPatientDetailsGet, setPatientDetailsGet] = useState(false);
       <center>
         <h1>Patient Medical state</h1>
         <div id="viewer" className='Holder'>
+          <label htmlFor="pId">Patient Id</label><input type="text" id='pId' value={patientId} placeholder='address' 
+          onChange={(e)=>{setPatientId(e.target.value)}}required/>
+          <div></div><button onClick={()=>{
+          if(patientId == '')
+            alert('Please enter valid patientId');
+          else if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)))
+            alert('Please enter patientId in the valid format');
+          }}>submit</button>
           <label htmlFor="pId">Patient Id</label><p id='pId'>{patientId}</p>
           <label htmlFor="medicalState">Medical State</label><p id='medicalState'>{medicalState}</p>
           <label htmlFor="lastModified">Latest modified date</label><p>{latestDate}</p>
@@ -44,6 +56,14 @@ const [showPatientDetailsGet, setPatientDetailsGet] = useState(false);
       <center>        
         <h1>Patient Details</h1>
         <div className="Holder" id='viewer'>
+          <label htmlFor="pId">Patient Id</label><input type="text" id='pId' value={patientId} placeholder='address' 
+          onChange={(e)=>{setPatientId(e.target.value)}}required/>
+          <div></div><button onClick={()=>{
+          if(patientId == '')
+            alert('Please enter valid patientId');
+          else if(!(/^0x[0-9A-Fa-f]{40}$/.test(patientId)))
+            alert('Please enter patientId in the valid format');
+          }}>submit</button>
           <label htmlFor="pId">Patient Id</label><p id='pId'>{patientId}</p>
           <label htmlFor="name">Name</label><p id='name'>{patientName}</p>
           <label htmlFor="age">Age</label><p id='age'>{age}</p>

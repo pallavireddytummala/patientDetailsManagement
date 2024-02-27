@@ -40,11 +40,22 @@ contract doctorPage{
         _;
     }
 
-    mapping (address => doctorAddedMedicalState[]) patientMedicalState;
-    mapping (address => doctorPrescription[]) patientPrescription;
-    mapping(address => details[]) patientDetails;
+    modifier isPatient(address patient){
+        require(bytes(patientDetails[patient][0].name).length != 0, "No patient details found");
+        _;
+    }
+
+    modifier isInsuranceProvider(address insId){
+        require(insuranceProviders[insId] != address(0), "No insurance provider found");
+        _;
+    }
+
+    mapping (address => doctorAddedMedicalState[]) public patientMedicalState;
+    mapping (address => doctorPrescription[]) public patientPrescription;
+    mapping(address => details[]) public patientDetails;
+    mapping(address => address) public insuranceProviders;
     
-    function addPatientMedicalState(address _pat, string memory _medicalState, address docID, string memory _date) public isDoctor(docID){
+    function setPatientMedicalState(address _pat, string memory _medicalState, address docID, string memory _date) public isDoctor(docID){
         patientMedicalState[_pat].push(doctorAddedMedicalState({
             medicalState: _medicalState,
             time : block.timestamp,
@@ -53,11 +64,7 @@ contract doctorPage{
         }));
     }
 
-    function getDoctorAddedMedicalState(address pat) view public returns (doctorAddedMedicalState[] memory){
-        return patientMedicalState[pat];
-    }
-
-    function addDoctorPrescription(address pat, string memory _medicine, address _doctorId, string memory _advice) public isDoctor(_doctorId){
+    function setDoctorPrescription(address pat, string memory _medicine, address _doctorId, string memory _advice) public isDoctor(_doctorId){
         patientPrescription[pat].push(doctorPrescription({
             medicine: _medicine,
             doctorId: _doctorId,
@@ -66,10 +73,6 @@ contract doctorPage{
         }));
     }
 
-    function getPatientPrescription(address pat) view public returns(doctorPrescription[] memory){
-        return patientPrescription[pat];
-    }
-    
     function setPatientDetails(address _patIID, string memory _name, string memory _gender, uint256 _age, address _insId, address _docId) public{
         patientDetails[_patIID].push(details({
             name: _name,
@@ -80,5 +83,29 @@ contract doctorPage{
             time: block.timestamp
         }));
     }
+
+    function getPatientMedicalState(address pat) view public isPatient(pat) returns(doctorAddedMedicalState[] memory){
+        return patientMedicalState[pat];
+    }
+
+    function getPatientPrescription(address pat) view public isPatient(pat) returns(doctorPrescription[] memory){
+        return patientPrescription[pat];
+    }
+
+    function getPatientDetails(address _pat) view public isPatient(_pat) returns(details[] memory){
+        return patientDetails[_pat];
+    }
     
+    function validatePatient(address _pat) view public isPatient(_pat) returns(bool){
+        return true;
+    }
+
+    function validateDoctor(address doc) view public isDoctor(doc) returns(bool) {
+        return true;
+    }
+
+    function validateInsuranceProvider(address ins) view public isInsuranceProvider(ins) returns(bool){
+        return true;
+    }
+
 }
