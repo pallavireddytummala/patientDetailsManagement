@@ -125,8 +125,8 @@ return (
   </div>
   <div id="InsuranceButtons" style={{display: showInsuranceButtons ? 'block' : 'none'}}>
     <center style={{marginTop: '10rem'}}>
-      <button onClick={()=>{setPatientDetailsGet(true);setInsuranceButtons(false)}}>Get Patient Details</button>
-      <button onClick={()=>{setPatientMedicatStateGet(true);setInsuranceButtons(false)}}>GET Patient Medical state</button>
+      <button onClick={()=>{setPatientDetailsGet(true);setPatientMedicatStateGet(false)}}>Get Patient Details</button>
+      <button onClick={()=>{setPatientDetailsGet(false);setPatientMedicatStateGet(true)}}>GET Patient Medical state</button>
     </center>
   </div>
   </div>

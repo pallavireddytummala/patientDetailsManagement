@@ -152,6 +152,10 @@ async function getPatientPrescription(){
   }
 }
 
+function scrollToTop(){
+  window.scrollTo({top: 0, behavior: 'smooth'})
+}
+
   return (
     <div id='Page'>
     <div id="Login" style={{display: showDoctorLogin ? 'block' : 'none'}}>
@@ -251,12 +255,18 @@ async function getPatientPrescription(){
     </div>
     <div id="doctorButtons" style={{display: showDoctorButtons ? 'block' : 'none'}}>
       <center id='buttons'>
-        <center><button onClick={()=>{setPatientDetailsGet(true);setDoctorButtons(false)}}>Get Patient Details</button></center>
-        <center><button onClick={()=>{setPatientDetailsSet(true);setDoctorButtons(false)}}>ADD / Modify Patient Details</button></center>
-        <center><button onClick={()=>{setPatientMedicatStateGet(true);setDoctorButtons(false)}}>GET Patient Medical state</button></center>
-        <center><button onClick={()=>{setPatientMedicatStateSet(true);setDoctorButtons(false)}}>ADD Patient Medical State</button></center>
-        <center><button onClick={()=>{setPatientPrescripitonGet(true);setDoctorButtons(false)}}>GET Patient Pescription</button></center>
-        <center><button onClick={()=>{setPatientPrescripitonSet(true);setDoctorButtons(false)}}>ADD Patient Pescription</button></center>
+        <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(true);setPatientDetailsSet(false);setPatientMedicatStateGet(false);
+        setPatientMedicatStateSet(false);setPatientPrescripitonGet(false);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>Get Patient Details</button></center>
+        <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(false);setPatientDetailsSet(true);setPatientMedicatStateGet(false);
+        setPatientMedicatStateSet(false);setPatientPrescripitonGet(false);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>ADD / Modify Patient Details</button></center>
+        <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(false);setPatientDetailsSet(false);setPatientMedicatStateGet(true);
+        setPatientMedicatStateSet(false);setPatientPrescripitonGet(false);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>GET Patient Medical state</button></center>
+        <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(false);setPatientDetailsSet(false);setPatientMedicatStateGet(false);
+        setPatientMedicatStateSet(true);setPatientPrescripitonGet(false);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>ADD Patient Medical State</button></center>
+        <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(false);setPatientDetailsSet(false);setPatientMedicatStateGet(false);
+        setPatientMedicatStateSet(false);setPatientPrescripitonGet(true);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>GET Patient Pescription</button></center>
+        <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(false);setPatientDetailsSet(false);setPatientMedicatStateGet(false);
+        setPatientMedicatStateSet(false);setPatientPrescripitonGet(true);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>ADD Patient Pescription</button></center>
       </center>
     </div>    
     </div>

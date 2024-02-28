@@ -56,8 +56,9 @@ async function validatePatient(){
 }
 
 async function getPatientDetails(){  
-  setPatientDetailsGet(true);
-  setPatientButtons(false); 
+  setPatientDetailsGet(true); 
+  setPatientMedicatStateGet(false);
+  setPatientPrescripitonGet(false);
   const data = await contrr.methods.getPatientDetails(patientId).call();
   console.log(data);
   setPatientName(String(data[0][0]));
@@ -66,9 +67,10 @@ async function getPatientDetails(){
   setInsuranceId(String(data[0][3]));
 }
 
-async function getPatientPrescription(){
-  setPatientPrescripitonGet(true);
-  setPatientButtons(false)
+async function getPatientPrescription(){  
+  setPatientDetailsGet(false); 
+  setPatientMedicatStateGet(true);
+  setPatientPrescripitonGet(false);
   const data = await contrr.methods.getPatientPrescription(patientId).call();
   console.log(data);
   setPrescription(data[0][0]);
@@ -76,11 +78,16 @@ async function getPatientPrescription(){
 }
 
 async function getPatientMedicalState(){  
-  setPatientMedicatStateGet(true);
-  setPatientButtons(false)
+  setPatientDetailsGet(false); 
+  setPatientMedicatStateGet(false);
+  setPatientPrescripitonGet(true);
   const data = await contrr.methods.getPatientMedicalState(patientId).call();
   setMedicalState(data[0][0]);
   setLatestDate(data[0][3]);
+}
+
+function scrollToTop(){
+  window.scrollTo({top: 0, behavior: 'smooth'})
 }
 
   return (
