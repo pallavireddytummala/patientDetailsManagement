@@ -69,8 +69,8 @@ async function getPatientDetails(){
 
 async function getPatientPrescription(){  
   setPatientDetailsGet(false); 
-  setPatientMedicatStateGet(true);
-  setPatientPrescripitonGet(false);
+  setPatientMedicatStateGet(false);
+  setPatientPrescripitonGet(true);
   const data = await contrr.methods.getPatientPrescription(patientId).call();
   console.log(data);
   setPrescription(data[0][0]);
@@ -79,8 +79,8 @@ async function getPatientPrescription(){
 
 async function getPatientMedicalState(){  
   setPatientDetailsGet(false); 
-  setPatientMedicatStateGet(false);
-  setPatientPrescripitonGet(true);
+  setPatientMedicatStateGet(true);
+  setPatientPrescripitonGet(false);
   const data = await contrr.methods.getPatientMedicalState(patientId).call();
   setMedicalState(data[0][0]);
   setLatestDate(data[0][3]);
@@ -94,7 +94,7 @@ function scrollToTop(){
     <div id='Page'>        
     <div id="Login" style={{display: showPatientLogin ? 'block' : 'none'}}>
       <center>
-          <label htmlFor="pID">Patient Id</label>
+          <label htmlFor="pID" style={{fontSize: '3.5rem'}}>Patient Id</label><br />
           <input type="text" placeholder='Patient ID ex:0x123456789abccdefghijklmnopqrstuvwxyz' id='pID' 
           value={patientId} onChange={(e)=>{setPatientId(e.target.value)}} required/>
           <br />

@@ -15,7 +15,7 @@ const [medicalState, setMedicalState] = useState('');
 const [patientName, setPatientName] = useState('');
 const [age, setAge] = useState('');
 const [gender, setGender] = useState('');
-const [docAdvice, setDocAdvice] = useState('');
+const [latestDate, setLatestDate] = useState('');
 const [showInsuranceLogin, setInsuranceLogin] = useState(true);
 const [showInsuranceButtons, setInsuranceButtons] = useState(false);
 const [showPatientMedicalStateGet, setPatientMedicatStateGet] = useState(false);
@@ -80,7 +80,7 @@ return (
   <div id='Page'>
   <div id="Login" style={{display: showInsuranceLogin ? 'block' : 'none'}}>
     <center>
-      <label htmlFor="pID">Insurance Id</label>
+      <label htmlFor="pID"style={{fontSize: '3.5rem'}} >Insurance Id</label><br />
       <input type="text" placeholder='Insurance Id ex:0x123456789abccdefghijklmnopqrstuvwxyz' id='pID' 
       value={insuranceId} onChange={(e)=>{setInsuranceId(e.target.value)}} required/>
       <br />
@@ -103,8 +103,8 @@ return (
         onChange={(e)=>{setPatientId(e.target.value)}}required/>
         <div></div><button onClick={getPatientMedicalState}>submit</button>
         <label htmlFor="pId">Patient Id</label><p id='pId'>{patientId}</p>
-        <label htmlFor="medicalState">Medical State</label><p id='medicalState'>{medicalState}</p>
-          <label htmlFor="lastModified">Medical advice</label><p>{docAdvice}</p>
+        <label htmlFor="medicalState">Medical State</label><p id='medicalState'>{medicalState}</p>        
+        <label htmlFor="lastModified">Latest modified date</label><p>{latestDate}</p>
       </div>
     </center>
   </div>

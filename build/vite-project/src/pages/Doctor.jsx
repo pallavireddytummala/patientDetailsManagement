@@ -160,7 +160,7 @@ function scrollToTop(){
     <div id='Page'>
     <div id="Login" style={{display: showDoctorLogin ? 'block' : 'none'}}>
       <center>
-          <label htmlFor="docID">Doctor Id</label>
+          <label htmlFor="docID" style={{fontSize: '3.5rem'}}>Doctor Id</label><br />
           <input type="text" placeholder='Doctor ID ex:0x123456789abccdefghijklmnopqrstuvwxyz' id='docID' 
           value={docId} onChange={(e)=>{setDocId(e.target.value)}} required/>
           <br />
@@ -266,7 +266,7 @@ function scrollToTop(){
         <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(false);setPatientDetailsSet(false);setPatientMedicatStateGet(false);
         setPatientMedicatStateSet(false);setPatientPrescripitonGet(true);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>GET Patient Pescription</button></center>
         <center><button onClick={()=>{scrollToTop(); setPatientDetailsGet(false);setPatientDetailsSet(false);setPatientMedicatStateGet(false);
-        setPatientMedicatStateSet(false);setPatientPrescripitonGet(true);setPatientPrescripitonSet(false)/*setDoctorButtons(false)*/}}>ADD Patient Pescription</button></center>
+        setPatientMedicatStateSet(false);setPatientPrescripitonGet(false);setPatientPrescripitonSet(true)/*setDoctorButtons(false)*/}}>ADD Patient Pescription</button></center>
       </center>
     </div>    
     </div>
