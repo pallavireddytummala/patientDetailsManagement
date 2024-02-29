@@ -74,7 +74,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: url('https://www.shutterstock.com/image-vector/hud-interface-virtual-hologram-future-260nw-764856499.jpg') no-repeat fixed;
+  background: url('assets/back.jpg') no-repeat fixed;
   background-size: cover;
 }
 
