@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import Web3 from 'web3';
 import '../App.css'
 import Cont from '../../../../build/contracts/doctorPage.json'
+import { useNavigate } from 'react-router-dom';
 
 function Patient(){
+const navigate = useNavigate()
 const [msg, setMsg] = useState('')
 const [web3, setweb3] = useState('')
 const [contrr, setcontrr] = useState('')
@@ -17,6 +19,7 @@ const [age, setAge] = useState('');
 const [gender, setGender] = useState('');
 const [prescription, setPrescription] = useState('');
 const [docAdvice, setDocAdvice] = useState('');
+const [showMenu, setShowMenu] = useState(false);
 const [showPatientLogin, setPatientLogin] = useState(true);
 const [showPatientButtons, setPatientButtons] = useState(false);
 const [showPatientMedicalStateGet, setPatientMedicatStateGet] = useState(false);
@@ -59,6 +62,8 @@ async function getPatientDetails(){
   setPatientDetailsGet(true); 
   setPatientMedicatStateGet(false);
   setPatientPrescripitonGet(false);
+  setPatientButtons(false); 
+  setShowMenu(true);
   const data = await contrr.methods.getPatientDetails(patientId).call();
   console.log(data);
   setPatientName(String(data[0][0]));
@@ -70,6 +75,8 @@ async function getPatientDetails(){
 async function getPatientPrescription(){  
   setPatientDetailsGet(false); 
   setPatientMedicatStateGet(false);
+  setPatientButtons(false);
+  setShowMenu(true);
   setPatientPrescripitonGet(true);
   const data = await contrr.methods.getPatientPrescription(patientId).call();
   console.log(data);
@@ -79,7 +86,9 @@ async function getPatientPrescription(){
 
 async function getPatientMedicalState(){  
   setPatientDetailsGet(false); 
+  setShowMenu(true);
   setPatientMedicatStateGet(true);
+  setPatientButtons(false);
   setPatientPrescripitonGet(false);
   const data = await contrr.methods.getPatientMedicalState(patientId).call();
   setMedicalState(data[0][0]);
@@ -139,7 +148,17 @@ function scrollToTop(){
         <button onClick={getPatientMedicalState}>GET Patient Medical state</button>
         <button onClick={getPatientPrescription}>GET Patient Pescription</button>
       </center>
-    </div>    
+    </div>
+    <div id="menuBar" style={{display : showMenu ? 'block' : 'none'}}>
+      <button id='menu'>menu</button>
+      <div className="menuContainer">
+        <button onClick={()=>{navigate('/')}}>HOME</button>
+        <button onClick={()=>window.location.reload()}>BACK</button>    
+        <button onClick={getPatientDetails}>Get Patient Details</button>
+        <button onClick={getPatientMedicalState}>GET Patient Medical state</button>
+        <button onClick={getPatientPrescription}>GET Patient Pescription</button>
+      </div>
+    </div>
     </div>
   )
 }

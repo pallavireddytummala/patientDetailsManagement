@@ -131,3 +131,44 @@ button:hover{
     box-shadow: 0 0 10px rgb(80, 80, 124), 0 0 20px rgb(80, 80, 124), 0 0 25px rgb(80, 80, 124), 0 0 30px rgb(80, 80, 124);
   }
 }
+
+/*Menu css*/
+.menuContainer{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  transition: .5s;
+  right: 0;
+  height: 420%;
+  width: 20rem;
+  overflow-y: scroll;
+  scrollbar-width: 0;
+}
+
+.menuContainer::-webkit-scrollbar{
+  display: none;
+}
+
+.menuContainer button{
+  position: relative;
+  margin-right: 0;
+  margin: .5rem;
+  width: 90%;
+  transform: scaleY(0);
+}
+
+.menuContainer button:hover{
+  transform: scale(1);
+  animation: none;
+}
+
+#menu:focus + .menuContainer button{
+  transform: scaleY(1);
+  transform-origin: right;
+}
+
+#menuBar{
+  position: absolute;
+  top: 0;
+  right: 0;
+}

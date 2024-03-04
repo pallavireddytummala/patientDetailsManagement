@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import Web3 from 'web3';
 import '../App.css'
 import Cont from '../../../../build/contracts/doctorPage.json'
+import { useNavigate } from 'react-router-dom';
 
 function InsuranceProvider(){
+const navigate = useNavigate()
 const [msg, setMsg] = useState('')
 const [web3, setweb3] = useState('')
 const [contrr, setcontrr] = useState('')
@@ -16,6 +18,7 @@ const [patientName, setPatientName] = useState('');
 const [age, setAge] = useState('');
 const [gender, setGender] = useState('');
 const [latestDate, setLatestDate] = useState('');
+const [showMenu, setShowMenu] = useState(false);
 const [showInsuranceLogin, setInsuranceLogin] = useState(true);
 const [showInsuranceButtons, setInsuranceButtons] = useState(false);
 const [showPatientMedicalStateGet, setPatientMedicatStateGet] = useState(false);
@@ -125,9 +128,18 @@ return (
   </div>
   <div id="InsuranceButtons" style={{display: showInsuranceButtons ? 'block' : 'none'}}>
     <center style={{marginTop: '10rem'}}>
+      <button onClick={()=>{setPatientDetailsGet(true);setPatientMedicatStateGet(false); setInsuranceButtons(false);  setShowMenu(true)}}>Get Patient Details</button>
+      <button onClick={()=>{setPatientDetailsGet(false);setPatientMedicatStateGet(true); setInsuranceButtons(false);  setShowMenu(true)}}>GET Patient Medical state</button>
+    </center>
+  </div>
+  <div id="menuBar" style={{display : showMenu ? 'block' : 'none'}}>
+    <button id='menu'>menu</button>
+    <div className="menuContainer">
+      <button onClick={()=>{navigate('/')}}>HOME</button>
+      <button onClick={()=>window.location.reload()}>BACK</button>
       <button onClick={()=>{setPatientDetailsGet(true);setPatientMedicatStateGet(false)}}>Get Patient Details</button>
       <button onClick={()=>{setPatientDetailsGet(false);setPatientMedicatStateGet(true)}}>GET Patient Medical state</button>
-    </center>
+    </div>
   </div>
   </div>
 ) 
