@@ -12,6 +12,6 @@ nvm install node 20.6.2 // to install node version 20.6.2
 
 nvm use 20.6.2 // to use the specificied node version
 
-truffle migrate --network development // to migrate/deploy all the smart contracts 
+truffle migrate --network development // to migrate/deploy all the smart contracts in the development network
 
 npm run dev //to start the execution
